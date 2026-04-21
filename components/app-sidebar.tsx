@@ -27,6 +27,7 @@ function getSettingsUrl(role?: string | null) {
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth()
+  const primaryRole = user?.role ?? user?.roles?.[0]?.name
 
   const navItems = React.useMemo(() => getNavByRole(user), [user])
 
@@ -34,12 +35,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     () => [
       {
         title: "Settings",
-        url: getSettingsUrl(user?.role),
+        url: getSettingsUrl(primaryRole),
         icon: IconSettings,
       },
       { title: "Get Help", url: "/help", icon: IconHelp, comingSoon: true },
     ],
-    [user?.role]
+    [primaryRole]
   )
 
   return (

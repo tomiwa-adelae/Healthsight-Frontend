@@ -13,6 +13,9 @@ export type User = {
   dob?: string | null;
   createdAt?: string | null;
   roles: { id: string; name: string; label: string }[];
+  role?: string | null;
+  adminPosition?: string | null;
+  adminModules?: string[];
   accountStatus: "ACTIVE" | "PENDING" | "SUSPENDED" | "REJECTED" | "BANNED";
 } | null;
 

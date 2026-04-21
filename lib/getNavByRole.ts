@@ -5,7 +5,7 @@ import { roleNavMap } from "@/constants/roleNavMap"
 export function getNavByRole(user?: User | null) {
   if (!user) return clientNavLinks
 
-  const role = user.role
+  const role = user.role ?? user.roles?.[0]?.name
   const position = user.adminPosition
   const modules = user.adminModules ?? []
 

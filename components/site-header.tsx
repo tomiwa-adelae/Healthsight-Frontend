@@ -16,7 +16,8 @@ const roleTitles: Record<string, string> = {
 
 export function SiteHeader() {
   const { user } = useAuth()
-  const title = roleTitles[user?.role || ""] || "Dashboard"
+  const primaryRole = user?.role ?? user?.roles?.[0]?.name ?? ""
+  const title = roleTitles[primaryRole] || "Dashboard"
 
   return (
     <header className="sticky top-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-b backdrop-blur-md transition-[width,height] ease-linear">
