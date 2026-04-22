@@ -50,7 +50,7 @@ const managementLinks = [
 ]
 
 const operationsLinks = [
-  { label: "Create Directors", href: "/admin/directors", icon: IconUserPlus },
+  // { label: "Create Directors", href: "/admin/directors", icon: IconUserPlus },
   {
     label: "View Pending Users",
     href: "/admin/pending-users",

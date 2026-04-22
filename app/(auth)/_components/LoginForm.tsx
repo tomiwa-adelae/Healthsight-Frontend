@@ -57,6 +57,12 @@ export const LoginForm = () => {
         email: values.email,
         password: values.password,
       })
+
+      if (data.requiresPasswordChange) {
+        router.push(`/change-password?email=${encodeURIComponent(data.email)}`)
+        return
+      }
+
       localStorage.setItem("access_token", data.accessToken)
       if (values.rememberMe) localStorage.setItem("remember_me", "true")
       setUser(data.user)
