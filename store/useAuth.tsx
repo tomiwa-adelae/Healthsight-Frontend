@@ -17,6 +17,12 @@ export type User = {
   adminPosition?: string | null;
   adminModules?: string[];
   accountStatus: "ACTIVE" | "PENDING" | "SUSPENDED" | "REJECTED" | "BANNED";
+  phcId?: string | null;
+  lgaId?: string | null;
+  districtId?: string | null;
+  phc?: { id: string; name: string } | null;
+  lga?: { id: string; name: string } | null;
+  district?: { id: string; name: string } | null;
 } | null;
 
 type AuthState = {

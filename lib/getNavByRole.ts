@@ -1,5 +1,5 @@
 import { User } from "@/store/useAuth"
-import { adminNavLinks, clientNavLinks } from "@/constants/nav-links"
+import { adminNavLinks, clientNavLinks, healthStaffNavLinks } from "@/constants/nav-links"
 import { roleNavMap } from "@/constants/roleNavMap"
 
 export function getNavByRole(user?: User | null) {
@@ -8,8 +8,9 @@ export function getNavByRole(user?: User | null) {
   const role = user.role ?? user.roles?.[0]?.name
   const position = user.adminPosition
   const modules = user.adminModules ?? []
+  const isAdmin = user.roles?.some((r) => r.name === "ADMIN")
 
-  if (role === "ADMIN") {
+  if (isAdmin) {
     if (position === "SUPER_ADMIN") return adminNavLinks
 
     if (position === "ADMIN") {
@@ -25,5 +26,6 @@ export function getNavByRole(user?: User | null) {
     })
   }
 
-  return roleNavMap[role] ?? clientNavLinks
+  // Healthsight staff roles (NURSE, PHARMACIST, etc.)
+  return roleNavMap[role] ?? healthStaffNavLinks
 }

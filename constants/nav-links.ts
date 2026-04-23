@@ -15,6 +15,7 @@ import {
   IconClipboardCheck,
   IconWallet,
   IconPigMoney,
+  IconClipboardText,
 } from "@tabler/icons-react"
 
 // ── Tenant / CLIENT nav ────────────────────────────────────────────────────────
@@ -124,6 +125,21 @@ export const landlordNavLinks = [
     label: "Notifications",
     slug: "/landlord/notifications",
     icon: IconBell,
+  },
+]
+
+// ── Healthsight staff nav ─────────────────────────────────────────────────────
+
+export const healthStaffNavLinks = [
+  {
+    label: "Dashboard",
+    slug: "/dashboard",
+    icon: IconLayoutDashboard,
+  },
+  {
+    label: "My Assessments",
+    slug: "/assessment",
+    icon: IconClipboardText,
   },
 ]
 

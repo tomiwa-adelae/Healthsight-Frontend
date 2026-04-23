@@ -61,12 +61,12 @@ const operationsLinks = [
 
 const settingsLinks = [
   {
-    label: "Set General Assessment Date",
+    label: "General Assessment",
     href: "/admin/assessment/general",
     icon: IconCalendarStats,
   },
   {
-    label: "Set Safecare Assessment Date",
+    label: "Safecare Assessment",
     href: "/admin/assessment/safecare",
     icon: IconCalendarCheck,
   },

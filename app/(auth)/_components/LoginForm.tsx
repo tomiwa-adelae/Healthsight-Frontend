@@ -73,7 +73,8 @@ export const LoginForm = () => {
       }
 
       toast.success("Login successful")
-      router.push("/dashboard")
+      const isAdmin = data.user.roles?.some((r: any) => r.name === "ADMIN")
+      router.push(isAdmin ? "/admin/dashboard" : "/dashboard")
     } catch (err: any) {
       const msg = err?.response?.data?.message
       toast.error(

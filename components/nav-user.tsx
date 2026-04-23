@@ -1,16 +1,13 @@
-"use client";
+"use client"
 
 import {
-  IconCreditCard,
   IconDotsVertical,
   IconLogout,
   IconNotification,
   IconUserCircle,
-  IconArrowLeft,
-  IconShieldFilled,
-} from "@tabler/icons-react";
+} from "@tabler/icons-react"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,28 +16,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { DEFAULT_PROFILE_IMAGE } from "@/constants";
-import { useAuth } from "@/store/useAuth";
-import { useSignout } from "@/hooks/use-signout";
-import { Badge } from "./ui/badge";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+} from "@/components/ui/sidebar"
+import { DEFAULT_PROFILE_IMAGE } from "@/constants"
+import { useAuth } from "@/store/useAuth"
+import { useSignout } from "@/hooks/use-signout"
+import { Badge } from "./ui/badge"
 
 export function NavUser() {
-  const { user } = useAuth();
-  const { isMobile } = useSidebar();
-  const handleSignout = useSignout();
-  const pathname = usePathname();
-  const isAdminArea = pathname.startsWith("/a/") || pathname === "/a";
+  const { user } = useAuth()
+  const { isMobile } = useSidebar()
+  const handleSignout = useSignout()
 
-  if (!user) return null;
+  if (!user) return null
 
   return (
     <SidebarMenu>
@@ -55,15 +48,15 @@ export function NavUser() {
                 <AvatarImage
                   src={user?.image || DEFAULT_PROFILE_IMAGE}
                   alt={`${user?.firstName}'s picture` || ""}
-                  className="object-cover size-full"
+                  className="size-full object-cover"
                 />
-                <AvatarFallback>Ekovibe</AvatarFallback>
+                <AvatarFallback>Healthsight</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
                   {user.firstName} {user?.lastName}
                 </span>
-                <span className="text-muted-foreground truncate text-xs">
+                <span className="truncate text-xs text-muted-foreground">
                   {user.email}
                 </span>
               </div>
@@ -82,13 +75,13 @@ export function NavUser() {
                   <AvatarImage
                     src={user?.image || DEFAULT_PROFILE_IMAGE}
                     alt={`${user?.firstName}'s picture` || ""}
-                    className="object-cover size-full"
+                    className="size-full object-cover"
                   />
-                  <AvatarFallback>Ekovibe</AvatarFallback>
+                  <AvatarFallback>Healthsight</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.firstName}</span>
-                  <span className="text-muted-foreground truncate text-xs">
+                  <span className="truncate text-xs text-muted-foreground">
                     {user.email}
                   </span>
                 </div>
@@ -104,13 +97,6 @@ export function NavUser() {
                 </Badge>
               </DropdownMenuItem>
               <DropdownMenuItem disabled>
-                <IconCreditCard />
-                Billing{" "}
-                <Badge variant="secondary" className="ml-auto">
-                  Soon
-                </Badge>
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
                 <IconNotification />
                 Notifications{" "}
                 <Badge variant="secondary" className="ml-auto">
@@ -118,20 +104,6 @@ export function NavUser() {
                 </Badge>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              {isAdminArea ? (
-                <Link href="/dashboard">
-                  <IconArrowLeft />
-                  Member View
-                </Link>
-              ) : (
-                <Link href="/a/dashboard">
-                  <IconShieldFilled />
-                  Admin Dashboard
-                </Link>
-              )}
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignout}>
               <IconLogout />
@@ -141,5 +113,5 @@ export function NavUser() {
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  );
+  )
 }
