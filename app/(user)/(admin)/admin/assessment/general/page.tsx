@@ -157,8 +157,8 @@ const questionSchema = z.object({
   text: z.string().min(1, "Question text is required"),
   type: z.enum(["YES_NO_NA", "SINGLE_SELECT", "MULTI_SELECT"]),
   categoryId: z.string().min(1, "Category is required"),
-  roleIds: z.array(z.string()).default([]),
-  options: z.array(optionSchema).default([]),
+  roleIds: z.array(z.string()),
+  options: z.array(optionSchema),
 })
 
 const periodSchema = z.object({
@@ -166,7 +166,7 @@ const periodSchema = z.object({
   description: z.string().optional(),
   startDate: z.string().min(1, "Start date is required"),
   endDate: z.string().min(1, "End date is required"),
-  questionIds: z.array(z.string()).default([]),
+  questionIds: z.array(z.string()),
 })
 
 type CategoryFormValues = z.infer<typeof categorySchema>
