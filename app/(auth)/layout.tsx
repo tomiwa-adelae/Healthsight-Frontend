@@ -5,5 +5,9 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return <div className="container py-16">{children}</div>
+  return (
+    <div className="container flex min-h-screen items-center justify-center py-16">
+      {children}
+    </div>
+  )
 }
