@@ -45,6 +45,7 @@ type QuestionStat = {
   roles: { id: string; name: string; label: string }[]
   totalAnswers: number
   optionStats: OptionStat[]
+  textResponses: { value: string; count: number }[] | null
 }
 
 type SubmissionSummary = {
@@ -80,6 +81,21 @@ type Results = {
   }
   questions: QuestionStat[]
   submissions: SubmissionSummary[]
+}
+
+function safecareColor(label: string) {
+  if (label === "Fully Compliant") return "text-green-700 dark:text-green-400 font-medium"
+  if (label === "Partially Compliant") return "text-amber-600 dark:text-amber-400 font-medium"
+  if (label === "Not Compliant") return "text-red-600 dark:text-red-400 font-medium"
+  if (label === "Not Applicable") return "text-muted-foreground"
+  return ""
+}
+
+function safecareBarColor(label: string) {
+  if (label === "Fully Compliant") return "[&>*]:bg-green-500"
+  if (label === "Partially Compliant") return "[&>*]:bg-amber-400"
+  if (label === "Not Compliant") return "[&>*]:bg-red-500"
+  return ""
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -160,8 +176,8 @@ export default function PeriodResultsPage() {
         title={period.title}
         description={period.description}
         back
-        fallbackHref="/admin/assessment/general"
-        badges={[period.status]}
+        fallbackHref={period.type === "SAFECARE" ? "/admin/assessment/safecare" : "/admin/assessment/general"}
+        badges={[period.type, period.status]}
         action={
           <div className="text-sm text-muted-foreground">
             {format(new Date(period.startDate), "dd MMM yyyy")} –{" "}
@@ -216,17 +232,39 @@ export default function PeriodResultsPage() {
                   {q.totalAnswers} response(s)
                 </p>
                 <div className="space-y-2">
-                  {q.optionStats.map((opt) => (
-                    <div key={opt.value} className="space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span>{opt.label}</span>
-                        <span className="text-muted-foreground">
-                          {opt.count} ({opt.percentage}%)
-                        </span>
+                  {q.type === "TEXT_INPUT" ? (
+                    q.textResponses && q.textResponses.length > 0 ? (
+                      <div className="space-y-1.5">
+                        {q.textResponses.slice(0, 8).map((r) => (
+                          <div key={r.value} className="flex items-start justify-between gap-4 rounded-md bg-muted/40 px-3 py-2 text-xs">
+                            <span className="flex-1 text-foreground">{r.value}</span>
+                            {r.count > 1 && (
+                              <span className="shrink-0 text-muted-foreground">×{r.count}</span>
+                            )}
+                          </div>
+                        ))}
+                        {q.textResponses.length > 8 && (
+                          <p className="text-xs text-muted-foreground pl-1">
+                            +{q.textResponses.length - 8} more unique responses
+                          </p>
+                        )}
                       </div>
-                      <Progress value={opt.percentage} className="h-1.5" />
-                    </div>
-                  ))}
+                    ) : (
+                      <p className="text-xs text-muted-foreground">No responses yet</p>
+                    )
+                  ) : (
+                    q.optionStats.map((opt) => (
+                      <div key={opt.value} className="space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span className={safecareColor(opt.label)}>{opt.label}</span>
+                          <span className="text-muted-foreground">
+                            {opt.count} ({opt.percentage}%)
+                          </span>
+                        </div>
+                        <Progress value={opt.percentage} className={`h-1.5 ${safecareBarColor(opt.label)}`} />
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             ))}

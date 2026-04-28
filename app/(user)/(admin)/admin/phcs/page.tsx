@@ -1,7 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, Building2, Plus, Pencil, Trash2 } from "lucide-react"
+import dynamic from "next/dynamic"
+import { Search, Building2, Plus, Pencil, Trash2, Map as MapIcon, MapPin, X } from "lucide-react"
+import Link from "next/link"
+
+const PhcMapPicker = dynamic(
+  () => import("./_components/PhcMapPicker"),
+  { ssr: false, loading: () => <div className="h-52 w-full rounded-md bg-muted animate-pulse" /> }
+)
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -61,6 +68,9 @@ import { IconPlus } from "@tabler/icons-react"
 type Phc = {
   id: string
   name: string
+  address: string | null
+  latitude: number | null
+  longitude: number | null
   createdAt: string
   lga: { id: string; name: string; district: { id: string; name: string } }
   _count: { users: number }
@@ -74,6 +84,9 @@ const phcSchema = z.object({
   name: z.string().min(1, "PHC name is required"),
   districtId: z.string().min(1, "District is required"),
   lgaId: z.string().min(1, "LGA is required"),
+  address: z.string().optional(),
+  latitude: z.number().nullable().optional(),
+  longitude: z.number().nullable().optional(),
 })
 
 type PhcFormValues = z.infer<typeof phcSchema>
@@ -107,7 +120,7 @@ function PhcFormSheet({
 
   const form = useForm<PhcFormValues>({
     resolver: zodResolver(phcSchema),
-    defaultValues: { name: "", districtId: "", lgaId: "" },
+    defaultValues: { name: "", districtId: "", lgaId: "", address: "", latitude: null, longitude: null },
   })
 
   // Populate form when editing
@@ -117,6 +130,9 @@ function PhcFormSheet({
         name: editing.name,
         districtId: editing.lga.district.id,
         lgaId: editing.lga.id,
+        address: editing.address ?? "",
+        latitude: editing.latitude ?? null,
+        longitude: editing.longitude ?? null,
       })
       // Pre-load LGAs for the editing district
       setLoadingLgas(true)
@@ -125,7 +141,7 @@ function PhcFormSheet({
         .then((res) => setLgas(res.data))
         .finally(() => setLoadingLgas(false))
     } else if (open && !editing) {
-      form.reset({ name: "", districtId: "", lgaId: "" })
+      form.reset({ name: "", districtId: "", lgaId: "", address: "", latitude: null, longitude: null })
       setLgas([])
     }
   }, [open, editing]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -150,7 +166,13 @@ function PhcFormSheet({
 
   async function onSubmit(values: PhcFormValues) {
     try {
-      const payload = { name: values.name, lgaId: values.lgaId }
+      const payload = {
+        name: values.name,
+        lgaId: values.lgaId,
+        address: values.address || null,
+        latitude: values.latitude ?? null,
+        longitude: values.longitude ?? null,
+      }
       const res = editing
         ? await api.patch(`/admin/phcs/${editing.id}`, payload)
         : await api.post("/admin/phcs", payload)
@@ -173,7 +195,7 @@ function PhcFormSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md">
+      <SheetContent className="w-full overflow-y-auto sm:max-w-md">
         <SheetHeader className="border-b">
           <SheetTitle>{editing ? "Edit PHC" : "Add New PHC"}</SheetTitle>
           <SheetDescription>
@@ -262,6 +284,54 @@ function PhcFormSheet({
                 </FormItem>
               )}
             />
+
+            {/* Address */}
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 2 Balogun Road, Agege" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Location picker */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium leading-none">
+                  Map Location <span className="text-muted-foreground font-normal">(optional)</span>
+                </p>
+                {(form.watch("latitude") != null) && (
+                  <button
+                    type="button"
+                    onClick={() => { form.setValue("latitude", null); form.setValue("longitude", null) }}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive"
+                  >
+                    <X className="h-3 w-3" /> Clear pin
+                  </button>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">Click on the map to drop a pin.</p>
+              <PhcMapPicker
+                lat={form.watch("latitude") ?? null}
+                lng={form.watch("longitude") ?? null}
+                onChange={(lat, lng) => {
+                  form.setValue("latitude", lat)
+                  form.setValue("longitude", lng)
+                }}
+              />
+              {form.watch("latitude") != null && (
+                <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <MapPin className="h-3 w-3 text-primary" />
+                  {form.watch("latitude")?.toFixed(5)}, {form.watch("longitude")?.toFixed(5)}
+                </p>
+              )}
+            </div>
 
             <SheetFooter className="mt-2 px-0">
               <Button type="submit" disabled={form.formState.isSubmitting}>
@@ -355,16 +425,23 @@ export default function AdminPhcsPage() {
           loading ? undefined : `${phcs.length} Primary Health Care centres`
         }
         action={
-          <Button
-            className="md:auto w-full"
-            onClick={() => {
-              setEditing(null)
-              setSheetOpen(true)
-            }}
-          >
-            <IconPlus />
-            Add PHC
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" asChild>
+              <Link href="/admin/phcs/map">
+                <MapIcon className="mr-2 h-4 w-4" />
+                Map view
+              </Link>
+            </Button>
+            <Button
+              onClick={() => {
+                setEditing(null)
+                setSheetOpen(true)
+              }}
+            >
+              <IconPlus />
+              Add PHC
+            </Button>
+          </div>
         }
       />
 
@@ -412,9 +489,10 @@ export default function AdminPhcsPage() {
             {loading ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 6 }).map((_, j) => (
+                  {/* PHC Name, LGA, District, Staff, Added, Actions */}
+                  {["w-40", "w-28", "w-24", "w-8", "w-20", "w-16"].map((w, j) => (
                     <TableCell key={j}>
-                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className={`h-4 ${w}`} />
                     </TableCell>
                   ))}
                 </TableRow>

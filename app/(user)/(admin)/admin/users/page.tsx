@@ -497,9 +497,10 @@ export default function AdminUsersPage() {
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 10 }).map((_, j) => (
+                  {/* Name, Email, Phone, Roles, District, LGA, PHC, Status, Joined, Actions */}
+                  {["w-32", "w-44", "w-28", "w-24", "w-24", "w-24", "w-32", "w-16", "w-20", "w-8"].map((w, j) => (
                     <TableCell key={j}>
-                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className={`h-4 ${w}`} />
                     </TableCell>
                   ))}
                 </TableRow>

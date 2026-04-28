@@ -206,9 +206,10 @@ export default function PendingUsersPage() {
             {loading ? (
               Array.from({ length: 6 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 8 }).map((_, j) => (
+                  {/* Name, Email, Roles, PHC, District, Status, Registered, Actions */}
+                  {["w-32", "w-44", "w-28", "w-32", "w-24", "w-16", "w-20", "w-8"].map((w, j) => (
                     <TableCell key={j}>
-                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className={`h-4 ${w}`} />
                     </TableCell>
                   ))}
                 </TableRow>

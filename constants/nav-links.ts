@@ -16,6 +16,8 @@ import {
   IconWallet,
   IconPigMoney,
   IconClipboardText,
+  IconMap,
+  IconClipboardData,
 } from "@tabler/icons-react"
 
 // ── Tenant / CLIENT nav ────────────────────────────────────────────────────────
@@ -143,7 +145,7 @@ export const healthStaffNavLinks = [
   },
 ]
 
-// ── Admin nav ──────────────────────────────────────────────────────────────────
+// ── Admin nav (Healthsight) ────────────────────────────────────────────────────
 
 export const adminNavLinks = [
   {
@@ -152,45 +154,38 @@ export const adminNavLinks = [
     icon: IconLayoutDashboard,
   },
   {
-    label: "Moderation Queue",
-    slug: "/admin/moderation",
-    icon: IconCircleCheck,
-    module: "moderation",
-  },
-  {
-    label: "All Listings",
-    slug: "/admin/listings",
-    icon: IconBuildingSkyscraper,
-    module: "listings",
-  },
-  {
-    label: "Property Tours",
-    slug: "/admin/tours",
-    icon: IconHomeDot,
-    module: "bookings",
-  },
-  {
-    label: "Screening Applications",
-    slug: "/admin/screening-applications",
-    icon: IconClipboardCheck,
-    module: "bookings",
-  },
-  {
-    label: "Agreements",
-    slug: "/admin/agreements",
-    icon: IconFileText,
-    module: "bookings",
-  },
-  {
     label: "Users",
     slug: "/admin/users",
     icon: IconUsers,
-    module: "users",
   },
   {
-    label: "Admin Team",
-    slug: "/admin/team",
+    label: "Pending Approvals",
+    slug: "/admin/pending-users",
+    icon: IconCircleCheck,
+  },
+  {
+    label: "PHC Facilities",
+    slug: "/admin/phcs",
+    icon: IconBuildingSkyscraper,
+  },
+  {
+    label: "PHC Map",
+    slug: "/admin/phcs/map",
+    icon: IconMap,
+  },
+  {
+    label: "General Assessment",
+    slug: "/admin/assessment/general",
+    icon: IconClipboardList,
+  },
+  {
+    label: "SafeCare Assessment",
+    slug: "/admin/assessment/safecare",
+    icon: IconShieldCheck,
+  },
+  {
+    label: "Roles",
+    slug: "/admin/roles",
     icon: IconUsersGroup,
-    superAdminOnly: true,
   },
 ]

@@ -205,9 +205,10 @@ export default function AdminRolesPage() {
             {loading ? (
               Array.from({ length: 6 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 7 }).map((_, j) => (
+                  {/* Label, System Name, Description, Registration, Users, Status, Actions */}
+                  {["w-28", "w-36", "w-48", "w-20", "w-8", "w-16", "w-8"].map((w, j) => (
                     <TableCell key={j}>
-                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className={`h-4 ${w}`} />
                     </TableCell>
                   ))}
                 </TableRow>

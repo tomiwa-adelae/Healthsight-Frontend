@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { format, isPast } from "date-fns"
-import { CheckCircle2, Clock, Save } from "lucide-react"
+import { CheckCircle2, Clock, Loader2, Save } from "lucide-react"
 
 import { PageHeader } from "@/components/PageHeader"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -13,6 +13,7 @@ import { Progress } from "@/components/ui/progress"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
   SelectContent,
@@ -30,7 +31,7 @@ type Question = {
   id: string
   text: string
   order: number
-  type: "YES_NO_NA" | "SINGLE_SELECT" | "MULTI_SELECT"
+  type: "YES_NO_NA" | "SINGLE_SELECT" | "MULTI_SELECT" | "TEXT_INPUT"
   category: Category
   options: Option[]
 }
@@ -66,8 +67,10 @@ export default function AssessmentFormPage() {
   const [period, setPeriod] = useState<Period | null>(null)
   const [answers, setAnswers] = useState<AnswersMap>({})
   const [activeCatId, setActiveCatId] = useState<string>("")
-  const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [saveStatus, setSaveStatus] = useState<"idle" | "pending" | "saving" | "saved" | "error">("idle")
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const savedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
   useEffect(() => {
@@ -158,8 +161,29 @@ export default function AssessmentFormPage() {
     return Object.values(answers).filter((v) => v.length > 0).length
   }
 
+  // Warn before leaving if there are unsaved changes
+  useEffect(() => {
+    function onBeforeUnload(e: BeforeUnloadEvent) {
+      if (saveStatus === "pending" || saveStatus === "saving") {
+        e.preventDefault()
+      }
+    }
+    window.addEventListener("beforeunload", onBeforeUnload)
+    return () => window.removeEventListener("beforeunload", onBeforeUnload)
+  }, [saveStatus])
+
   function setAnswer(questionId: string, value: string[]) {
     setAnswers((prev) => ({ ...prev, [questionId]: value }))
+    setSaveStatus("pending")
+
+    // Clear any existing debounce timer
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (savedTimerRef.current) clearTimeout(savedTimerRef.current)
+
+    // Auto-save 2 seconds after the last change
+    debounceRef.current = setTimeout(() => {
+      doSave()
+    }, 2000)
   }
 
   function scrollToCategory(catId: string) {
@@ -170,28 +194,29 @@ export default function AssessmentFormPage() {
     })
   }
 
-  async function handleSave() {
+  async function doSave(currentAnswers?: typeof answers) {
     if (!period) return
-    setSaving(true)
-    try {
-      const payload = {
-        answers: Object.entries(answers)
-          .filter(([, v]) => v.length > 0)
-          .map(([questionId, selectedOptions]) => ({
-            questionId,
-            selectedOptions,
-          })),
-      }
-      await api.post(`/assessment/periods/${id}/submit`, payload)
-      toast.success("Answers saved successfully")
-    } catch (err: any) {
-      const msg = err?.response?.data?.message
-      toast.error(
-        Array.isArray(msg) ? msg.join(", ") : msg || "Failed to save answers"
-      )
-    } finally {
-      setSaving(false)
+    const payload = {
+      answers: Object.entries(currentAnswers ?? answers)
+        .filter(([, v]) => v.length > 0)
+        .map(([questionId, selectedOptions]) => ({ questionId, selectedOptions })),
     }
+    setSaveStatus("saving")
+    try {
+      await api.post(`/assessment/periods/${id}/submit`, payload)
+      setSaveStatus("saved")
+      // Reset to idle after 3 seconds
+      savedTimerRef.current = setTimeout(() => setSaveStatus("idle"), 3000)
+    } catch (err: any) {
+      setSaveStatus("error")
+      const msg = err?.response?.data?.message
+      toast.error(Array.isArray(msg) ? msg.join(", ") : msg || "Failed to save answers")
+    }
+  }
+
+  function handleSave() {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    doSave()
   }
 
   if (loading) {
@@ -214,7 +239,22 @@ export default function AssessmentFormPage() {
     )
   }
 
-  if (!period) return null
+  // Still transitioning (redirect in progress or loading race)
+  if (!period) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-64" />
+        <div className="flex gap-6">
+          <div className="hidden w-56 shrink-0 space-y-2 md:block">
+            {[...Array(8)].map((_, i) => <Skeleton key={i} className="h-14 w-full rounded-lg" />)}
+          </div>
+          <div className="flex-1 space-y-4">
+            {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-20 w-full" />)}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const categories = getCategories(period.questions)
   const total = period.questions.length
@@ -240,10 +280,38 @@ export default function AssessmentFormPage() {
         back
         fallbackHref="/assessment"
         action={
-          <Button onClick={handleSave} disabled={saving || closed}>
-            <Save className="mr-2 h-4 w-4" />
-            {saving ? "Saving..." : "Save Answers"}
-          </Button>
+          <div className="flex items-center gap-3">
+            {/* Auto-save status indicator */}
+            {saveStatus === "pending" && (
+              <span className="text-xs text-muted-foreground">Unsaved changes</span>
+            )}
+            {saveStatus === "saving" && (
+              <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" />
+                Saving…
+              </span>
+            )}
+            {saveStatus === "saved" && (
+              <span className="flex items-center gap-1.5 text-xs text-green-600">
+                <CheckCircle2 className="h-3 w-3" />
+                All saved
+              </span>
+            )}
+            {saveStatus === "error" && (
+              <span className="text-xs text-destructive">Save failed</span>
+            )}
+
+            {!closed && (
+              <Button
+                onClick={handleSave}
+                disabled={saveStatus === "saving"}
+                variant={saveStatus === "saved" ? "outline" : "default"}
+              >
+                <Save className="mr-2 h-4 w-4" />
+                {saveStatus === "saving" ? "Saving…" : "Save"}
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -418,15 +486,31 @@ export default function AssessmentFormPage() {
 
           {/* Bottom save button */}
           {!closed && (
-            <div className="flex justify-end pb-4">
+            <div className="flex items-center justify-end gap-3 pb-4">
+              {saveStatus === "saved" && (
+                <span className="flex items-center gap-1.5 text-xs text-green-600">
+                  <CheckCircle2 className="h-3 w-3" />
+                  All saved
+                </span>
+              )}
+              {saveStatus === "pending" && (
+                <span className="text-xs text-muted-foreground">Unsaved changes</span>
+              )}
               <Button
                 size="lg"
                 onClick={handleSave}
-                disabled={saving}
+                disabled={saveStatus === "saving"}
+                variant={saveStatus === "saved" ? "outline" : "default"}
                 className="shadow-md"
               >
-                <Save className="mr-2 h-4 w-4" />
-                {saving ? "Saving..." : `Save (${answered}/${total} answered)`}
+                {saveStatus === "saving" ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Save className="mr-2 h-4 w-4" />
+                )}
+                {saveStatus === "saving"
+                  ? "Saving…"
+                  : `Save (${answered}/${total} answered)`}
               </Button>
             </div>
           )}
@@ -535,6 +619,19 @@ function QuestionItem({
             )
           })}
         </div>
+      )}
+
+      {question.type === "TEXT_INPUT" && (
+        <Textarea
+          value={value[0] ?? ""}
+          onChange={(e) =>
+            onChange(e.target.value ? [e.target.value] : [])
+          }
+          disabled={disabled}
+          placeholder="Type your response here…"
+          rows={3}
+          className="max-w-lg resize-none"
+        />
       )}
     </div>
   )
