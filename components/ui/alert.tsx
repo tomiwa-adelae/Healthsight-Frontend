@@ -11,6 +11,16 @@ const alertVariants = cva(
         default: "bg-card text-card-foreground",
         destructive:
           "bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current",
+        // Semantic banners (PRD §6.5) — 4px brand left border, tinted surface,
+        // brand-colored icon. Tints/borders use the static brand scales so they
+        // stay consistent across all three themes.
+        info: "border-l-4 border-l-brand-sky-500 bg-brand-sky-50 text-foreground [&>svg]:text-brand-sky-600 dark:bg-brand-sky-500/10 dark:[&>svg]:text-brand-sky-300",
+        success:
+          "border-l-4 border-l-brand-verdant-500 bg-brand-verdant-50 text-foreground [&>svg]:text-brand-verdant-600 dark:bg-brand-verdant-500/10 dark:[&>svg]:text-brand-verdant-300",
+        warning:
+          "border-l-4 border-l-brand-amber-500 bg-brand-amber-50 text-foreground [&>svg]:text-brand-amber-600 dark:bg-brand-amber-500/10 dark:[&>svg]:text-brand-amber-300",
+        danger:
+          "border-l-4 border-l-brand-crimson-500 bg-brand-crimson-50 text-foreground [&>svg]:text-brand-crimson-600 dark:bg-brand-crimson-500/10 dark:[&>svg]:text-brand-crimson-300",
       },
     },
     defaultVariants: {

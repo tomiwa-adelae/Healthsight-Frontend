@@ -158,7 +158,7 @@ export const RegisterForm = () => {
   if (success) {
     return (
       <Card className="w-full max-w-[500px] shadow-lg">
-        <CardContent className="flex flex-col items-center gap-4 px-10 py-12 text-center">
+        <CardContent className="flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-10 sm:py-12">
           <Image
             src="/assets/images/logo.jpeg"
             alt="Lagos State Health District"
@@ -166,7 +166,7 @@ export const RegisterForm = () => {
             height={100}
             className="rounded-full object-cover"
           />
-          <h2 className="text-lg font-semibold">Registration Successful</h2>
+          <h2 className="font-heading text-lg font-semibold">Registration Successful</h2>
           <p className="text-sm text-muted-foreground">
             Your account has been submitted for admin approval. You will be
             notified once your account is activated.

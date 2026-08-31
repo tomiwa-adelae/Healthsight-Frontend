@@ -53,7 +53,7 @@ function StepEmail({ onNext }: { onNext: (email: string) => void }) {
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
           <Mail className="h-6 w-6 text-primary" />
         </div>
-        <h1 className="text-xl font-semibold">Forgot your password?</h1>
+        <h1 className="font-heading text-xl font-semibold">Forgot your password?</h1>
         <p className="text-sm text-muted-foreground">
           Enter your email and we&apos;ll send you a one-time code.
         </p>
@@ -138,7 +138,7 @@ function StepOtp({
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
           <ShieldCheck className="h-6 w-6 text-primary" />
         </div>
-        <h1 className="text-xl font-semibold">Check your email</h1>
+        <h1 className="font-heading text-xl font-semibold">Check your email</h1>
         <p className="text-sm text-muted-foreground">
           We sent a 6-digit code to{" "}
           <span className="font-medium text-foreground">{email}</span>.
@@ -173,13 +173,13 @@ function StepOtp({
           </Button>
 
           <div className="flex items-center justify-between pt-1">
-            <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+            <Button type="button" variant="ghost" size="sm" onClick={onBack} className="h-auto gap-1 px-1.5 py-1 text-sm text-muted-foreground hover:text-foreground">
               <ArrowLeft size={14} />
               Change email
-            </button>
-            <button type="button" onClick={resend} className="text-sm text-primary hover:underline">
+            </Button>
+            <Button type="button" variant="link" size="sm" onClick={resend} className="h-auto px-0 text-sm">
               Resend code
-            </button>
+            </Button>
           </div>
         </form>
       </Form>
@@ -240,7 +240,7 @@ function StepNewPassword({
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
           <KeyRound className="h-6 w-6 text-primary" />
         </div>
-        <h1 className="text-xl font-semibold">Set a new password</h1>
+        <h1 className="font-heading text-xl font-semibold">Set a new password</h1>
         <p className="text-sm text-muted-foreground">
           Choose a strong password for{" "}
           <span className="font-medium text-foreground">{email}</span>.
@@ -295,8 +295,9 @@ function StepNewPassword({
                     <button
                       type="button"
                       tabIndex={-1}
+                      aria-label={showConfirm ? "Hide password" : "Show password"}
                       onClick={() => setShowConfirm((v) => !v)}
-                      className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
@@ -312,10 +313,10 @@ function StepNewPassword({
           </Button>
 
           <div className="flex justify-center pt-1">
-            <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+            <Button type="button" variant="ghost" size="sm" onClick={onBack} className="h-auto gap-1 px-1.5 py-1 text-sm text-muted-foreground hover:text-foreground">
               <ArrowLeft size={14} />
               Back
-            </button>
+            </Button>
           </div>
         </form>
       </Form>

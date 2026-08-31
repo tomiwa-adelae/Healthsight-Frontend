@@ -113,7 +113,7 @@ type Question = {
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
 const STATUS_COLORS: Record<string, string> = {
-  DRAFT: "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300",
+  DRAFT: "bg-brand-charcoal-100 text-brand-charcoal-600 dark:bg-brand-charcoal-700 dark:text-brand-charcoal-200",
   ACTIVE: "bg-brand-verdant-100 text-brand-verdant-700 dark:bg-brand-verdant-900 dark:text-brand-verdant-300",
   CLOSED: "bg-brand-crimson-100 text-brand-crimson-700 dark:bg-brand-crimson-900 dark:text-brand-crimson-300",
 }
@@ -243,10 +243,10 @@ export default function SafecareAdminPage() {
           bg="bg-brand-verdant-50 dark:bg-brand-verdant-900/40"
         />
         <SummaryCard
-          icon={<Clock className="h-5 w-5 text-gray-500" />}
+          icon={<Clock className="h-5 w-5 text-brand-charcoal-400" />}
           label="Draft Periods"
           value={draft.length}
-          bg="bg-gray-50 dark:bg-gray-900/40"
+          bg="bg-brand-charcoal-50 dark:bg-brand-charcoal-800/60"
         />
         <SummaryCard
           icon={<BarChart3 className="h-5 w-5 text-brand-sky-600" />}

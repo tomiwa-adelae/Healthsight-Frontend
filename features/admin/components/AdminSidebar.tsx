@@ -29,6 +29,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   DropdownMenu,
@@ -76,6 +77,7 @@ export function AdminSidebar({ pendingCount = 0 }: { pendingCount?: number }) {
   const pathname = usePathname()
   const router = useRouter()
   const { user, clearUser } = useAuth()
+  const { setOpenMobile } = useSidebar()
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/")
@@ -97,20 +99,22 @@ export function AdminSidebar({ pendingCount = 0 }: { pendingCount?: number }) {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b py-4">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              asChild
-              className="hover:bg-transparent active:bg-transparent"
-            >
-              <Link href="/admin/dashboard">
-                <Logo className="size-8" />
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarHeader className="border-b py-3">
+        <Link
+          href="/admin/dashboard"
+          onClick={() => setOpenMobile(false)}
+          className="flex items-center gap-2.5 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+        >
+          <Logo className="size-11 shrink-0 group-data-[collapsible=icon]:size-8" />
+          <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
+            <span className="font-heading text-base font-semibold text-sidebar-foreground">
+              Healthsight
+            </span>
+            <span className="truncate font-ui text-[0.65rem] tracking-wide text-sidebar-foreground/70">
+              Admin Portal
+            </span>
+          </div>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent>
@@ -125,7 +129,7 @@ export function AdminSidebar({ pendingCount = 0 }: { pendingCount?: number }) {
                     isActive={isActive(href)}
                     tooltip={label}
                   >
-                    <Link href={href}>
+                    <Link href={href} onClick={() => setOpenMobile(false)}>
                       <Icon />
                       <span>{label}</span>
                     </Link>
@@ -149,13 +153,13 @@ export function AdminSidebar({ pendingCount = 0 }: { pendingCount?: number }) {
                     isActive={isActive(href)}
                     tooltip={label}
                   >
-                    <Link href={href}>
+                    <Link href={href} onClick={() => setOpenMobile(false)}>
                       <Icon />
                       <span>{label}</span>
                     </Link>
                   </SidebarMenuButton>
                   {showBadge && pendingCount > 0 && (
-                    <SidebarMenuBadge className="bg-amber-500 text-white">
+                    <SidebarMenuBadge className="bg-brand-amber-500 text-brand-charcoal-900">
                       {pendingCount}
                     </SidebarMenuBadge>
                   )}
@@ -178,7 +182,7 @@ export function AdminSidebar({ pendingCount = 0 }: { pendingCount?: number }) {
                     isActive={isActive(href)}
                     tooltip={label}
                   >
-                    <Link href={href}>
+                    <Link href={href} onClick={() => setOpenMobile(false)}>
                       <Icon />
                       <span>{label}</span>
                     </Link>
@@ -199,7 +203,7 @@ export function AdminSidebar({ pendingCount = 0 }: { pendingCount?: number }) {
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent"
                 >
-                  <Avatar className="size-8 rounded-lg">
+                  <Avatar className="size-8 shrink-0 rounded-lg">
                     <AvatarImage
                       src={user?.image ?? ""}
                       alt={user?.firstName ?? ""}
@@ -208,15 +212,15 @@ export function AdminSidebar({ pendingCount = 0 }: { pendingCount?: number }) {
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
+                  <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">
                       {user?.firstName} {user?.lastName}
                     </span>
-                    <span className="truncate text-xs text-muted-foreground">
+                    <span className="truncate text-xs text-sidebar-foreground/70">
                       {user?.roles?.map((r) => r.label).join(", ")}
                     </span>
                   </div>
-                  <IconChevronRight className="ml-auto size-4" />
+                  <IconChevronRight className="ml-auto size-4 shrink-0" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent

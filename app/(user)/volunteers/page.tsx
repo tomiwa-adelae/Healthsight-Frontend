@@ -100,7 +100,7 @@ export default function VolunteersPage() {
       />
 
       <div className="flex flex-wrap gap-3">
-        <div className="relative max-w-sm min-w-[200px] flex-1">
+        <div className="relative w-full min-w-0 sm:w-auto sm:max-w-sm sm:flex-1">
           <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search by name, community…"
@@ -119,7 +119,7 @@ export default function VolunteersPage() {
             setPage(1)
           }}
         >
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-full sm:w-[160px]">
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>

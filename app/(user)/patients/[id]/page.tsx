@@ -280,7 +280,7 @@ export default function PatientDetailPage() {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Stethoscope className="h-4 w-4 text-muted-foreground" />
-          <h2 className="font-semibold">Screenings ({patient.screenings.length})</h2>
+          <h2 className="font-heading font-semibold">Screenings ({patient.screenings.length})</h2>
         </div>
         {patient.screenings.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4">No screenings yet.</p>
@@ -313,7 +313,7 @@ export default function PatientDetailPage() {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Calendar className="h-4 w-4 text-muted-foreground" />
-          <h2 className="font-semibold">Appointments ({patient.appointments.length})</h2>
+          <h2 className="font-heading font-semibold">Appointments ({patient.appointments.length})</h2>
         </div>
         {patient.appointments.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4">No appointments scheduled.</p>

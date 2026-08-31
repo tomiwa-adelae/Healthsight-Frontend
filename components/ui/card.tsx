@@ -2,17 +2,35 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// Category accent colours for the optional top bar (PRD §6.4). Pinned to the
+// static brand scales so the bar means the same thing in every theme.
+const cardAccent = {
+  sky: "before:bg-brand-sky-500",
+  crimson: "before:bg-brand-crimson-500",
+  amber: "before:bg-brand-amber-500",
+  verdant: "before:bg-brand-verdant-500",
+  neutral: "before:bg-brand-charcoal-300",
+} as const
+
 function Card({
   className,
   size = "default",
+  accent,
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+}: React.ComponentProps<"div"> & {
+  size?: "default" | "sm"
+  accent?: keyof typeof cardAccent
+}) {
   return (
     <div
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card flex flex-col gap-4 overflow-hidden rounded-lg bg-card py-4 text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 *:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
+        "group/card relative flex flex-col gap-4 overflow-hidden rounded-lg bg-card py-4 text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 *:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
+        // Accent variant adds a 4px brand top-bar + a subtle hover lift (PRD §6.4).
+        accent &&
+          "transition-[transform,box-shadow] duration-200 before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-1 before:content-[''] hover:-translate-y-0.5 hover:shadow-lg",
+        accent && cardAccent[accent],
         className
       )}
       {...props}

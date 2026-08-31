@@ -19,6 +19,17 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
+        // Brand semantic tags (PRD §6.7) — bg-100 / text-700, theme-consistent
+        // because they're pinned to the static brand scales.
+        sky: "bg-brand-sky-100 text-brand-sky-700 dark:bg-brand-sky-500/15 dark:text-brand-sky-300",
+        crimson:
+          "bg-brand-crimson-100 text-brand-crimson-700 dark:bg-brand-crimson-500/15 dark:text-brand-crimson-300",
+        amber:
+          "bg-brand-amber-100 text-brand-amber-700 dark:bg-brand-amber-500/15 dark:text-brand-amber-300",
+        verdant:
+          "bg-brand-verdant-100 text-brand-verdant-700 dark:bg-brand-verdant-500/15 dark:text-brand-verdant-300",
+        neutral:
+          "bg-brand-charcoal-100 text-brand-charcoal-700 dark:bg-brand-charcoal-700 dark:text-brand-charcoal-100",
       },
     },
     defaultVariants: {

@@ -14,6 +14,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { useAuth } from "@/store/useAuth"
 import { getNavByRole } from "@/lib/getNavByRole"
@@ -27,6 +28,7 @@ function getSettingsUrl(role?: string | null) {
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth()
+  const { setOpenMobile } = useSidebar()
   const primaryRole = user?.role ?? user?.roles?.[0]?.name
 
   const navItems = React.useMemo(() => getNavByRole(user), [user])
@@ -45,20 +47,22 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              asChild
-              className="hover:bg-transparent"
-            >
-              <a href="/">
-                <Logo className="size-9" />
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarHeader className="border-b">
+        <a
+          href="/"
+          onClick={() => setOpenMobile(false)}
+          className="flex items-center gap-2.5 px-1 py-1.5"
+        >
+          <Logo className="size-12 shrink-0" />
+          <div className="flex min-w-0 flex-col leading-tight">
+            <span className="font-heading text-base font-semibold text-sidebar-foreground">
+              Healthsight
+            </span>
+            <span className="truncate font-ui text-[0.65rem] tracking-wide text-sidebar-foreground/70">
+              Lagos State Health District I
+            </span>
+          </div>
+        </a>
       </SidebarHeader>
 
       <SidebarContent>

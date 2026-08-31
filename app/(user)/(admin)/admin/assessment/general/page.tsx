@@ -130,7 +130,7 @@ type Period = {
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 
 const STATUS_COLORS: Record<string, string> = {
-  DRAFT: "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300",
+  DRAFT: "bg-brand-charcoal-100 text-brand-charcoal-600 dark:bg-brand-charcoal-700 dark:text-brand-charcoal-200",
   ACTIVE: "bg-brand-verdant-100 text-brand-verdant-700 dark:bg-brand-verdant-900 dark:text-brand-verdant-300",
   CLOSED: "bg-brand-crimson-100 text-brand-crimson-700 dark:bg-brand-crimson-900 dark:text-brand-crimson-300",
 }

@@ -10,6 +10,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
+import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 
 export function StaffLayout({ children }: { children: React.ReactNode }) {
   const { user, _hasHydrated } = useAuth()
@@ -33,14 +34,17 @@ export function StaffLayout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="h-4" />
-          <span className="text-xs font-medium text-muted-foreground">
+        <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur-md">
+          <SidebarTrigger className="-ml-1 shrink-0" />
+          <Separator orientation="vertical" className="h-4 shrink-0" />
+          <span className="min-w-0 flex-1 truncate text-xs font-medium text-muted-foreground">
             {user.roles?.map((r) => r.label).join(" · ")}
           </span>
+          <div className="shrink-0">
+            <ThemeSwitcher />
+          </div>
         </header>
-        <div className="container flex flex-1 flex-col gap-4 py-8">
+        <div className="container flex flex-1 flex-col gap-4 overflow-x-clip py-6 sm:py-8">
           {children}
         </div>
       </SidebarInset>

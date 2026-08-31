@@ -131,11 +131,13 @@ const STATUS_CONFIG: Record<
   },
   SUSPENDED: {
     label: "Suspended",
-    className: "bg-gray-100 text-gray-600 hover:bg-gray-100",
+    className:
+      "bg-brand-charcoal-100 text-brand-charcoal-600 hover:bg-brand-charcoal-100 dark:bg-brand-charcoal-700 dark:text-brand-charcoal-200",
   },
   DEACTIVATED: {
     label: "Deactivated",
-    className: "bg-gray-100 text-gray-500 hover:bg-gray-100",
+    className:
+      "bg-brand-charcoal-100 text-brand-charcoal-500 hover:bg-brand-charcoal-100 dark:bg-brand-charcoal-700 dark:text-brand-charcoal-300",
   },
 }
 

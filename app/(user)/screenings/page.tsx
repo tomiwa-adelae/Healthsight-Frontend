@@ -104,7 +104,7 @@ export default function ScreeningsPage() {
       />
 
       <div className="flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-[200px] max-w-sm">
+        <div className="relative w-full min-w-0 sm:w-auto sm:max-w-sm sm:flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search by patient or screening no…"
@@ -114,7 +114,7 @@ export default function ScreeningsPage() {
           />
         </div>
         <Select value={type} onValueChange={(v) => { setType(v === "all" ? "" : v); setPage(1) }}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="All types" />
           </SelectTrigger>
           <SelectContent>
@@ -125,7 +125,7 @@ export default function ScreeningsPage() {
           </SelectContent>
         </Select>
         <Select value={status} onValueChange={(v) => { setStatus(v === "all" ? "" : v); setPage(1) }}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-full sm:w-[160px]">
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>

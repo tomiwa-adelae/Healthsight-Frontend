@@ -55,9 +55,9 @@ export default function PhcMap({ phcs }: { phcs: Phc[] }) {
             <div className="space-y-1 text-sm">
               <p className="font-semibold">{phc.name}</p>
               {phc.address && (
-                <p className="text-xs text-gray-500">{phc.address}</p>
+                <p className="text-xs text-brand-charcoal-500">{phc.address}</p>
               )}
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-brand-charcoal-500">
                 {phc.lga.name} · {phc.lga.district.name}
               </p>
             </div>

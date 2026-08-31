@@ -113,8 +113,8 @@ export const LoginForm = () => {
 
           {/* top — seal (transparent, framed by a thin outline ring) */}
           <div className="relative z-10">
-            <div className="inline-flex rounded-full border-2 border-white/40 p-1.5">
-              <Logo className="w-28" />
+            <div className="inline-flex rounded-full border-2 border-white/40 p-2">
+              <Logo className="w-40 lg:w-44" />
             </div>
           </div>
 
@@ -150,8 +150,8 @@ export const LoginForm = () => {
         <div className="flex flex-col justify-center bg-card p-8 sm:p-10 lg:p-12">
           {/* seal — mobile only (panel hidden < md) */}
           <div className="mb-8 flex justify-center md:hidden">
-            <div className="inline-flex rounded-full border-2 border-brand-sky-200 p-1.5">
-              <Logo className="w-24" />
+            <div className="inline-flex rounded-full border-2 border-brand-sky-200 p-2">
+              <Logo className="w-32" />
             </div>
           </div>
 

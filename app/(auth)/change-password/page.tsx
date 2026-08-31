@@ -80,7 +80,7 @@ function ChangePasswordForm() {
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
               <KeyRound className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="text-xl font-semibold">Set a new password</h1>
+            <h1 className="font-heading text-xl font-semibold">Set a new password</h1>
             <p className="text-sm text-muted-foreground">
               Your account was created with a temporary password. Please set a
               permanent one to continue.

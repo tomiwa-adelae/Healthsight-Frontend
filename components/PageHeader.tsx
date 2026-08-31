@@ -54,7 +54,9 @@ export function PageHeader({
             </Button>
           )}
           <div>
-            <h1 className="text-3xl font-semibold">{title}</h1>
+            <h1 className="font-heading text-2xl font-semibold text-heading sm:text-3xl">
+              {title}
+            </h1>
             {description && (
               <p className="mt-2 text-sm text-muted-foreground md:text-base">
                 {description}

@@ -57,7 +57,9 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
+        // Branded data table (PRD §6.8): zebra striping + distinct hover, both
+        // tied to theme tokens so the effect reads correctly in all 3 themes.
+        "border-b border-border/60 transition-colors even:bg-muted/40 hover:bg-accent has-aria-expanded:bg-accent data-[state=selected]:bg-accent",
         className
       )}
       {...props}
@@ -70,7 +72,9 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
+        // Bold branded header row (PRD §6.8) — uses the theme's primary action
+        // colour (sky-600 Daylight / sky-500 Night / amber-600 Warmth).
+        "h-11 bg-primary px-3 text-left align-middle text-[0.7rem] font-semibold tracking-wider whitespace-nowrap text-primary-foreground uppercase first:rounded-tl-md last:rounded-tr-md [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}

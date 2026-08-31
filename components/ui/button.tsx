@@ -18,6 +18,15 @@ const buttonVariants = cva(
           "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+        // Solid crimson danger (PRD §6.3) — for confirm-destruct CTAs.
+        danger:
+          "bg-brand-crimson-500 text-white hover:bg-brand-crimson-600 focus-visible:ring-brand-crimson-500/30",
+        // Amber CTA (PRD §6.3) — dark text for WCAG AA on amber.
+        amber:
+          "bg-brand-amber-500 text-brand-charcoal-900 hover:bg-brand-amber-600 focus-visible:ring-brand-amber-500/40",
+        // Success (PRD §6.3).
+        success:
+          "bg-brand-verdant-500 text-white hover:bg-brand-verdant-600 focus-visible:ring-brand-verdant-500/30",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

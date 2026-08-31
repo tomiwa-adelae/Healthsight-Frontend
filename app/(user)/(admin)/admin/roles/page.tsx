@@ -237,19 +237,9 @@ export default function AdminRolesPage() {
                   </TableCell>
                   <TableCell>
                     {role.isAvailableForRegistration ? (
-                      <Badge
-                        className="bg-brand-verdant-100 text-brand-verdant-700 hover:bg-brand-verdant-100"
-                        variant="secondary"
-                      >
-                        Available
-                      </Badge>
+                      <Badge variant="verdant">Available</Badge>
                     ) : (
-                      <Badge
-                        className="bg-gray-100 text-gray-500 hover:bg-gray-100"
-                        variant="secondary"
-                      >
-                        Restricted
-                      </Badge>
+                      <Badge variant="neutral">Restricted</Badge>
                     )}
                   </TableCell>
                   <TableCell>
@@ -260,19 +250,9 @@ export default function AdminRolesPage() {
                   </TableCell>
                   <TableCell>
                     {role.isActive ? (
-                      <Badge
-                        className="bg-brand-verdant-100 text-brand-verdant-700 hover:bg-brand-verdant-100"
-                        variant="secondary"
-                      >
-                        Active
-                      </Badge>
+                      <Badge variant="verdant">Active</Badge>
                     ) : (
-                      <Badge
-                        className="bg-gray-100 text-gray-500 hover:bg-gray-100"
-                        variant="secondary"
-                      >
-                        Inactive
-                      </Badge>
+                      <Badge variant="neutral">Inactive</Badge>
                     )}
                   </TableCell>
                   <TableCell>

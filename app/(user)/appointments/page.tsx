@@ -123,9 +123,9 @@ export default function AppointmentsPage() {
         }
       />
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <Select value={status} onValueChange={(v) => { setStatus(v === "all" ? "" : v); setPage(1) }}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>
@@ -238,7 +238,7 @@ function PatientSearch({ onSelect }: { onSelect: (id: string, label: string) => 
           {selected || <span className="text-muted-foreground">Search patient by name or number…</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 w-[320px]" align="start">
+      <PopoverContent className="w-[calc(100vw-2rem)] p-0 sm:w-[320px]" align="start">
         <Command shouldFilter={false}>
           <CommandInput placeholder="Type name or patient number…" value={query} onValueChange={setQuery} />
           <CommandList>

@@ -307,13 +307,15 @@ function PhcFormSheet({
                   Map Location <span className="text-muted-foreground font-normal">(optional)</span>
                 </p>
                 {(form.watch("latitude") != null) && (
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => { form.setValue("latitude", null); form.setValue("longitude", null) }}
-                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive"
+                    className="h-auto gap-1 px-1.5 py-1 text-xs text-muted-foreground hover:text-destructive"
                   >
                     <X className="h-3 w-3" /> Clear pin
-                  </button>
+                  </Button>
                 )}
               </div>
               <p className="text-xs text-muted-foreground">Click on the map to drop a pin.</p>
@@ -517,14 +519,7 @@ export default function AdminPhcsPage() {
                     {phc.lga.district.name}
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="secondary"
-                      className={
-                        phc._count.users > 0
-                          ? "bg-brand-verdant-100 text-brand-verdant-700 hover:bg-brand-verdant-100"
-                          : "bg-gray-100 text-gray-500 hover:bg-gray-100"
-                      }
-                    >
+                    <Badge variant={phc._count.users > 0 ? "verdant" : "neutral"}>
                       {phc._count.users} staff
                     </Badge>
                   </TableCell>
@@ -597,7 +592,7 @@ export default function AdminPhcsPage() {
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleteLoading}
-              className="bg-destructive text-white hover:bg-destructive/90"
+              className="bg-brand-crimson-500 text-white hover:bg-brand-crimson-600"
             >
               {deleteLoading ? "Deleting..." : "Delete"}
             </AlertDialogAction>
